@@ -2,7 +2,10 @@ const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = function(env, argv) {
+	const isProd = argv.mode === 'production';
+
 	return {
+		devtool: isProd ? 'source-map' : 'cheap-module-source-map',
 		context: path.resolve(__dirname, './src/'),
 		entry: './index.js',
 		output: {
@@ -33,7 +36,7 @@ module.exports = function(env, argv) {
 		},
 		plugins: [
 			new BundleAnalyzerPlugin({
-				analyzerMode: argv.mode === 'production' ? 'static' : 'disabled',
+				analyzerMode: isProd ? 'static' : 'disabled',
 				openAnalyzer: true,
 				reportFilename: './bundle-report.html'
 			})
